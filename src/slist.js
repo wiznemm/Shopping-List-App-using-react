@@ -25,6 +25,7 @@ class Todo extends Component {
   }
 
   componentDidMount() {
+    // You can add any initial data fetching or setup logic here
   }
 
   handleInputChange = (event) => {
@@ -32,12 +33,24 @@ class Todo extends Component {
   };
 
   handleAddTodo = () => {
-    const { todos, newTodo } = this.state;
+    const { todos, newTodo, editIndex } = this.state;
     if (newTodo.trim() !== '') {
-      this.setState({
-        todos: [...todos, newTodo],
-        newTodo: '',
-      });
+      if (editIndex === -1) {
+        // Add new todo
+        this.setState({
+          todos: [...todos, newTodo],
+          newTodo: '',
+        });
+      } else {
+        // Update existing todo
+        const updatedTodos = [...todos];
+        updatedTodos[editIndex] = newTodo;
+        this.setState({
+          todos: updatedTodos,
+          newTodo: '',
+          editIndex: -1,
+        });
+      }
     }
   };
 
@@ -53,15 +66,6 @@ class Todo extends Component {
     this.setState({ editIndex: index, newTodo: todoToEdit });
   };
 
-  handleUpdateTodo = () => {
-    const { todos, editIndex, newTodo } = this.state;
-    if (editIndex !== -1 && newTodo.trim() !== '') {
-      const updatedTodos = [...todos];
-      updatedTodos[editIndex] = newTodo;
-      this.setState({ todos: updatedTodos, editIndex: -1, newTodo: '' });
-    }
-  };
-
   handleCancelEdit = () => {
     this.setState({ editIndex: -1, newTodo: '' });
   };
@@ -74,7 +78,12 @@ class Todo extends Component {
         <h1>Shopping list App</h1>
         <div>
           <input type="text" value={newTodo} onChange={this.handleInputChange} />
-          <button onClick={this.handleAddTodo}>Add things in list</button>
+          <button onClick={this.handleAddTodo}>
+            {editIndex === -1 ? 'Add things in list' : 'Update'}
+          </button>
+          {editIndex !== -1 && (
+            <button onClick={this.handleCancelEdit}>Cancel</button>
+          )}
         </div>
         <ul>
           {todos.map((todo, index) => (
@@ -86,12 +95,6 @@ class Todo extends Component {
             />
           ))}
         </ul>
-        {editIndex !== -1 && (
-          <div>
-            <button onClick={this.handleUpdateTodo}>Update</button>
-            <button onClick={this.handleCancelEdit}>Cancel</button>
-          </div>
-        )}
       </div>
     );
   }
