@@ -21,6 +21,7 @@ class Todo extends Component {
       todos: [],
       newTodo: '',
       editIndex: -1,
+      isEditing: false,
     };
   }
 
@@ -29,17 +30,9 @@ class Todo extends Component {
   };
 
   handleAddTodo = () => {
-    const { todos, newTodo, editIndex } = this.state;
+    const { todos, newTodo, editIndex, isEditing } = this.state;
 
-    if (editIndex === -1) {
-      if (newTodo.trim() !== '') {
-        this.setState({
-          todos: [...todos, newTodo],
-          newTodo: '',
-        });
-      }
-    } else {
-      // Updating an existing todo
+    if (isEditing) {
       if (newTodo.trim() !== '') {
         const updatedTodos = [...todos];
         updatedTodos[editIndex] = newTodo;
@@ -47,6 +40,14 @@ class Todo extends Component {
           todos: updatedTodos,
           newTodo: '',
           editIndex: -1,
+          isEditing: false,
+        });
+      }
+    } else {
+      if (newTodo.trim() !== '') {
+        this.setState({
+          todos: [...todos, newTodo],
+          newTodo: '',
         });
       }
     }
@@ -61,16 +62,15 @@ class Todo extends Component {
   handleEditTodo = (index) => {
     const { todos } = this.state;
     const todoToEdit = todos[index];
-    this.setState({ editIndex: index, newTodo: todoToEdit });
+    this.setState({ editIndex: index, newTodo: todoToEdit, isEditing: true });
   };
 
   handleCancelEdit = () => {
-    this.setState({ editIndex: -1, newTodo: '' });
+    this.setState({ editIndex: -1, newTodo: '', isEditing: false });
   };
 
   render() {
-    const { todos, newTodo, editIndex } = this.state;
-    const isEditing = editIndex !== -1;
+    const { todos, newTodo, isEditing } = this.state;
 
     return (
       <div>
