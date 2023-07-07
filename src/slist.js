@@ -21,12 +21,10 @@ class Todo extends Component {
       todos: [],
       newTodo: '',
       editIndex: -1,
-      editTodo: '',
     };
   }
 
   componentDidMount() {
-    // You can add any initial data fetching or setup logic here
   }
 
   handleInputChange = (event) => {
@@ -52,24 +50,24 @@ class Todo extends Component {
   handleEditTodo = (index) => {
     const { todos } = this.state;
     const todoToEdit = todos[index];
-    this.setState({ editIndex: index, editTodo: todoToEdit });
+    this.setState({ editIndex: index, newTodo: todoToEdit });
   };
 
   handleUpdateTodo = () => {
-    const { todos, editIndex, editTodo } = this.state;
-    if (editIndex !== -1 && editTodo.trim() !== '') {
+    const { todos, editIndex, newTodo } = this.state;
+    if (editIndex !== -1 && newTodo.trim() !== '') {
       const updatedTodos = [...todos];
-      updatedTodos[editIndex] = editTodo;
-      this.setState({ todos: updatedTodos, editIndex: -1, editTodo: '' });
+      updatedTodos[editIndex] = newTodo;
+      this.setState({ todos: updatedTodos, editIndex: -1, newTodo: '' });
     }
   };
 
   handleCancelEdit = () => {
-    this.setState({ editIndex: -1, editTodo: '' });
+    this.setState({ editIndex: -1, newTodo: '' });
   };
 
   render() {
-    const { todos, newTodo, editIndex, editTodo } = this.state;
+    const { todos, newTodo, editIndex } = this.state;
 
     return (
       <div>
@@ -90,11 +88,6 @@ class Todo extends Component {
         </ul>
         {editIndex !== -1 && (
           <div>
-            <input
-              type="text"
-              value={editTodo}
-              onChange={(event) => this.setState({ editTodo: event.target.value })}
-            />
             <button onClick={this.handleUpdateTodo}>Update</button>
             <button onClick={this.handleCancelEdit}>Cancel</button>
           </div>
