@@ -25,7 +25,6 @@ class Todo extends Component {
   }
 
   componentDidMount() {
-    // You can add any initial data fetching or setup logic here
   }
 
   handleInputChange = (event) => {
@@ -36,13 +35,11 @@ class Todo extends Component {
     const { todos, newTodo, editIndex } = this.state;
     if (newTodo.trim() !== '') {
       if (editIndex === -1) {
-        // Add new todo
         this.setState({
           todos: [...todos, newTodo],
           newTodo: '',
         });
       } else {
-        // Update existing todo
         const updatedTodos = [...todos];
         updatedTodos[editIndex] = newTodo;
         this.setState({
