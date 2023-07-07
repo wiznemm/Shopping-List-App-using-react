@@ -24,22 +24,23 @@ class Todo extends Component {
     };
   }
 
-  componentDidMount() {
-  }
-
   handleInputChange = (event) => {
     this.setState({ newTodo: event.target.value });
   };
 
   handleAddTodo = () => {
     const { todos, newTodo, editIndex } = this.state;
-    if (newTodo.trim() !== '') {
-      if (editIndex === -1) {
+
+    if (editIndex === -1) {
+      if (newTodo.trim() !== '') {
         this.setState({
           todos: [...todos, newTodo],
           newTodo: '',
         });
-      } else {
+      }
+    } else {
+      // Updating an existing todo
+      if (newTodo.trim() !== '') {
         const updatedTodos = [...todos];
         updatedTodos[editIndex] = newTodo;
         this.setState({
@@ -69,17 +70,20 @@ class Todo extends Component {
 
   render() {
     const { todos, newTodo, editIndex } = this.state;
+    const isEditing = editIndex !== -1;
 
     return (
       <div>
         <h1>Shopping list App</h1>
         <div>
           <input type="text" value={newTodo} onChange={this.handleInputChange} />
-          <button onClick={this.handleAddTodo}>
-            {editIndex === -1 ? 'Add things in list' : 'Update'}
-          </button>
-          {editIndex !== -1 && (
-            <button onClick={this.handleCancelEdit}>Cancel</button>
+          {isEditing ? (
+            <div>
+              <button onClick={this.handleAddTodo}>Update</button>
+              <button onClick={this.handleCancelEdit}>Cancel</button>
+            </div>
+          ) : (
+            <button onClick={this.handleAddTodo}>Add things in list</button>
           )}
         </div>
         <ul>
