@@ -33,6 +33,7 @@ class Todo extends Component {
     const { todos, newTodo, editIndex, isEditing } = this.state;
 
     if (isEditing) {
+      // Updating an existing todo
       if (newTodo.trim() !== '') {
         const updatedTodos = [...todos];
         updatedTodos[editIndex] = newTodo;
@@ -44,6 +45,7 @@ class Todo extends Component {
         });
       }
     } else {
+      // Adding a new todo
       if (newTodo.trim() !== '') {
         this.setState({
           todos: [...todos, newTodo],
@@ -76,14 +78,17 @@ class Todo extends Component {
       <div>
         <h1>Shopping list App</h1>
         <div>
-          <input type="text" value={newTodo} onChange={this.handleInputChange} />
           {isEditing ? (
             <div>
+              <input type="text" value={newTodo} onChange={this.handleInputChange} />
               <button onClick={this.handleAddTodo}>Update</button>
               <button onClick={this.handleCancelEdit}>Cancel</button>
             </div>
           ) : (
-            <button onClick={this.handleAddTodo}>Add things in list</button>
+            <div>
+              <input type="text" value={newTodo} onChange={this.handleInputChange} />
+              <button onClick={this.handleAddTodo}>Add things in list</button>
+            </div>
           )}
         </div>
         <ul>
